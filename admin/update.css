@@ -1,0 +1,107 @@
+
+*{
+      font-family: "pooins",sans-serif;
+      padding: 0;
+}
+body{
+ margin: 0;
+  padding: 0;
+  display: flex;            
+  height: 100vh;
+    background-image: url("beds.jpg");
+    background-size: cover;
+     background-repeat: no-repeat;
+  background-position: center;
+
+}
+.logo{
+  color: rgb(4, 114, 192)
+}
+.details{
+   
+   width: 40%;
+  height: 100vh;
+  background-color: #cfd6dd;
+  display: flex;
+  align-content: center;
+  border: 2px solid black;
+  justify-content: center;
+}
+.head1{
+   font-size: 30px;
+}
+.head2{
+  color: #797d83;
+}
+.field{
+  margin-top: 30px;
+}
+.txt{
+  width: 400px;
+  height: 30px;
+  border-radius: 6px;
+  background-color: transparent;
+  outline: none;
+  border: 2px solid white;
+}
+.txt:focus{
+  border-color: rgb(2, 143, 244) ;
+}
+.role{
+  margin-top: 15px;
+}
+.submit{
+  background-color: rgb(4, 114, 192) ;
+  width: 100%;
+  height: 30px;
+  outline: none;
+  border: 2px solid rgb(4, 114, 192);
+  cursor: pointer;
+}
+.submit:hover{
+  background-color: rgb(2, 143, 244);
+}
+.acc{
+  display: flex;
+  justify-self: center;
+}
+.acc a{
+    text-decoration: none;
+    color: rgb(2, 143, 244);
+}
+/* Mobile devices (up to 600px) */
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+  }
+
+  .details {
+    width: 100%;
+    height: auto;
+    border: none;
+  }
+
+  .txt {
+    width: 100%;
+  }
+
+  .submit {
+    width: 100%;
+  }
+}
+/*  Tablet */
+@media (max-width: 900px) {
+  .details {
+    width: 70%;
+  }
+
+  .txt {
+    width: 100%;
+  }
+}
+/* Small laptop */
+@media (max-width: 1200px) {
+  .details {
+    width: 50%;
+  }
+}

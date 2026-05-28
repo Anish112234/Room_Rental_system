@@ -1,0 +1,100 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.nav{
+    color: white;
+   background-color: rgb(30, 5, 53);
+    border: 2px solid black;
+    width: 30%;
+    height: 663px;
+    display: grid;
+}
+.nav img{
+    border: 2px solid white;
+    border-radius: 5px;
+    
+}
+.nav a{
+    text-decoration: none;
+    color: white;
+}
+.Full{
+    display:flex;
+    flex-direction: row;
+   
+}
+.dashboard{
+    border: 2px solid black;
+    width: 100%;
+}
+.Top {
+    width: 100%;
+  display: flex;
+  justify-content: end;
+   float: right;
+}
+.Find{
+    background-image: url("Living.jpg");
+    background-size: cover;
+    background-position: center;
+    margin-top: 50px;
+    height: 300px;
+   
+}
+.Find .search{
+    color: white;
+    display: flex;
+    justify-self: center;
+    background-color: transparent;
+     background-color: aliceblue;
+      box-shadow: 5px 10px 8px rgb(32, 31, 31);
+      align-content: center;
+    height: 100px;
+     text-align: center;
+     align-items: center;
+     border-radius: 5px;
+     border:  2px solid black;
+   
+        
+}
+.srch{
+    color: black;
+    width: 180px;
+   align-content: center;
+    height: 60px;
+  
+}
+.Find h1{
+    color: white;
+    display: flex;
+    height: 100px;
+ text-align: center;
+}
+.btn{
+    background-color: rgb(127, 243, 243);
+    cursor: pointer;
+    font-size: medium;
+    height: 30px;
+    width: 100px;
+    border-radius:5px;
+    border: 1px solid black;
+}
+.btn:focus{
+    box-shadow: 0px 0px 10px rgb(127, 243, 243) ;
+}
+.btn:hover{
+    background-color: rgb(0, 246, 246);
+}
+.txt{
+    border-radius: 5px;
+    outline: none;
+    height: 30px;
+    width: 160px;
+    border: 1px solid black;
+}
+.txt:focus{
+  outline: none;
+  border: 2px solid rgb(36, 172, 226);
+  box-shadow: 0px 0px 10px rgb(127, 243, 243);
+}
