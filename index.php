@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
+
     <title>Home Page</title>
 </head>
 <body>
-
+<button id="dark" onclick="toggleMode()">🌙 Dark Mode</button>
 <!-- HEADER -->
 <div class="head">
     <div>Logo</div>
@@ -64,12 +65,13 @@
 
         <div class="room-card">
 
-           <?php if(!empty($row['image'])) { ?>
-    <img src="/Room_Rental_System/uploads/
-    <?php echo trim($row['image']); ?>" 
+  <?php if(!empty($row['image'])) { ?>
+    <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>"
+         alt="Room Image"
          style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
 <?php } else { ?>
-    <img src="/Room_Rental_System/uploads/default.png" 
+    <img src="uploads/default.png"
+         alt="Default Image"
          style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
 <?php } ?>
 
@@ -81,7 +83,7 @@
                 <?php echo htmlspecialchars($row['description']); ?>
             </p>
 
-            <a href="book.php?room_id=<?php echo $row['id']; ?>" class="btn">
+            <a href="auth/login.php" class="btn">
                 Book Now
             </a>
 
@@ -123,5 +125,6 @@
     <p>© 2026 Room Rental System | All Rights Reserved</p>
 </footer>
 
+<script src="./js/index.js"></script>
 </body>
 </html>
