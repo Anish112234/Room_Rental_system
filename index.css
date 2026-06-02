@@ -234,3 +234,92 @@ nav a:hover::before {
     }
 }
 
+
+/*
+after use toogle dark buttom
+*/
+.dark{
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.dark #darkMode{
+    background-color: #1e1e1e;
+    color: white;
+    border: none;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.dark .head{
+     background-color: #1e1e1e;
+   
+}
+.dark a{
+    color: white;
+}
+.dark .hero{
+     background-color: #1e1e1e;
+     color: white;
+}
+.dark .search-section{
+    background-color: #1e1e1e;
+    margin-bottom: 3px;
+}
+.dark .search-section h2{
+    color: white;
+}
+.dark .search-section input{
+    background-color: transparent;
+    color: white;
+} 
+
+
+.dark .rooms-section{
+    background-color: #1e1e1e;
+   
+}
+.dark .rooms-section h2{
+        color: white;
+}
+.dark .room-card{
+    background-color: #1e1e1e;
+      width: 220px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(227, 227, 227, 0.242);
+    transition: 0.3s;
+}
+
+.dark .room-card p{
+     color: white;
+} 
+
+.dark .room-card h3{
+    color: white;
+}
+
+.dark .how{
+    background-color: #1e1e1e;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.dark .how h2{
+    color: white;
+}
+
+.dark .about{
+    background-color: #1e1e1e;
+}
+
+.dark .about h2{
+    color: white;
+}
+.dark .about p{
+    color: white;
+}
+.dark footer p
+{
+    color: white;
+}
+

@@ -8,7 +8,7 @@
     <title>Home Page</title>
 </head>
 <body>
-<button id="dark" onclick="toggleMode()">🌙 Dark Mode</button>
+<button id="darkMode">🌙 Dark Mode</button>
 <!-- HEADER -->
 <div class="head">
     <div>Logo</div>
