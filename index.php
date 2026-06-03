@@ -9,9 +9,9 @@
 </head>
 <body>
 <button id="darkMode">🌙 Dark Mode</button>
-<!-- HEADER -->
+<!--Logo loding wait   -->
 <div class="head">
-    <div>Logo</div>
+    <div id="logo">Logo</div>
 
     <nav class="content">
         <a href="#index" class="home">Home</a>
@@ -36,7 +36,7 @@
     </div>
 </section>
 
-<!-- SEARCH -->
+<!-- SEARCH  for location  btn -->
 <section class="search-section">
     <h2>Search Rooms</h2>
     <div class="search-box">
@@ -46,7 +46,7 @@
     </div>
 </section>
 
-<!-- ROOMS (DYNAMIC) -->
+<!-- ROOMS (DYNAMIC) fetch from Data base  -->
 <section class="rooms-section">
     <h2>Available Rooms</h2>
 
@@ -102,7 +102,7 @@
     </div>
 </section>
 
-<!-- HOW IT WORKS -->
+<!-- HOW IT WORKS   (system description)   -->
 <section class="how">
     <h2>How It Works</h2>
     <div class="steps">
@@ -112,7 +112,7 @@
     </div>
 </section>
 
-<!-- ABOUT -->
+<!-- ABOUT The System-->
 <section class="about">
     <h2>About Us</h2>
     <p>
