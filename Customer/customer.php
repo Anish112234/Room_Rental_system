@@ -1,82 +1,130 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Dashboard</title>
-    <link rel="stylesheet" href="Customer.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="customer.css">
+
+    <title>Home Page</title>
 </head>
 <body>
-    <div class="Full">
-    <div class="nav">
-        <div class="logo">
- <h1><i class="fa-regular fa-house"></i>ROOM RENTAL</h1>
-   </div>
-   <div>
-    <a href="#" class="Profile"><i class="fa-solid fa-user"></i></a>Profile
-   </div>   
-   <div> 
-   <i class="fa-regular fa-house"></i><a href="customer.php">Dashboard</a>
-</div>
-<div>
-<i class="fa-brands fa-chrome"></i><a href="#">Browse Rooms</a>
-</div>
-<div>
-<i class="fa-solid fa-bookmark"></i></i><a href="#">My bookings</a>
-</div>
-<div>
-  <i class="fa-regular fa-heart"></i> <a href="#"> Wishlist</a>
-    </div>
-    <div>
-       <i class="fa-regular fa-message"></i><a href="#">Message</a>
-    </div>
-    <div>
-        <i class="fa-regular fa-circle-user"></i><a href="#">Profile</a>
-    </div>
-    <div>
-        <i class="fa-solid fa-gear"></i><a href="#">setting</a>
-    </div>
-    <div>
-       <i class="fa-solid fa-right-from-bracket"></i> <a href="#">Logout</a>
+<button id="darkMode">🌙 Dark Mode</button>
+<!--Logo loding wait   -->
+<div class="head">
+    <div id="logo">Logo</div>
+
+    <nav class="content">
+        <a href="#index" class="home">Home</a>
+        <a href="#" class="rooms">Rooms</a>
+        <a href="#" class="about1">About Us</a>
+        <a href="#" class="work">How It Work</a>
+        <a href="#" class="contact">Contact us</a>
+    </nav>
+
+    <div class="portel">
+        <a href="auth/login.php">Login</a>
+        <a href="auth/register.php" class="register">Register</a>
     </div>
 </div>
-<div class="dashboard">
-    <div>
-       Customer Dashboard <a class="Top"><i class="fa-regular fa-bell"></i> <i class="fa-solid fa-user"></i>name </a>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Room Rental System</h1>
+        <p>Find affordable rooms easily in your city</p>
+        <a href="#" class="btn">Explore Rooms</a>
     </div>
-    <div class="Find">
-      <h1>Find Yours Perfect Rooms</h1>
-      <div class="search">
-      <div class="srch">
-        <label>Location</label><br>
-        <input class="txt"  type="text" placeholder="Enter location">
-      </div>
-        <div class="srch">
-        <label>Check In</label><br>
-        <input class="txt" type="text" placeholder="Enter location">
-      </div>
-        <div class="srch">
-        <label>Check out</label><br>
-        <input class="txt"  type="text" placeholder="Enter location">
-      </div>
-        <div class="srch">
-          <label>Guest</label><br>
-        <select>
-          <option class="txt" >Guest1</option>
-          <option class="txt" >Guest2</option>
-          <option class="txt" >Guest3</option>
-          <option class="txt" >Guest4</option>
-        </select>
-      </div>
-      <div class="srch">
-        <button class="btn" name="search">Search</button>
-      </div>
-      </div>
+</section>
+
+<!-- SEARCH  for location  btn -->
+<section class="search-section">
+    <h2>Search Rooms</h2>
+    <div class="search-box">
+        <input type="text" placeholder="Location">
+        <input type="text" placeholder="Price range">
+        <button>Search</button>
     </div>
-</div>
-</div>
-</script>
+</section>
+
+<!-- ROOMS (DYNAMIC) fetch from Data base  -->
+<section class="rooms-section">
+    <h2>Available Rooms</h2>
+
+    <div class="room-grid">
+
+        <?php
+        include("dbconnection.php");
+
+        $sql = "SELECT * FROM rooms ORDER BY id DESC";
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) > 0){
+
+            while($row = mysqli_fetch_assoc($result)){
+        ?>
+
+        <div class="room-card">
+
+  <?php if(!empty($row['image'])) { ?>
+    <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>"
+         alt="Room Image"
+         style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+<?php } else { ?>
+    <img src="uploads/default.png"
+         alt="Default Image"
+         style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+<?php } ?>
+
+            <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+            <p>📍 <?php echo htmlspecialchars($row['location']); ?></p>
+            <p>💰 Rs. <?php echo htmlspecialchars($row['price']); ?>/month</p>
+
+            <p style="font-size:12px; color:gray;">
+                <?php echo htmlspecialchars($row['description']); ?>
+            </p>
+
+            <a href="auth/login.php" class="btn">
+                Book Now
+            </a>
+
+        </div>
+
+        <?php
+            }
+
+        } else {
+            echo "<p style='text-align:center;'>No rooms available right now.</p>";
+        }
+        ?>
+
+    </div>
+</section>
+    </div>
+</section>
+
+<!-- HOW IT WORKS   (system description)   -->
+<section class="how">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div class="step">Search Room</div>
+        <div class="step">Contact Owner</div>
+        <div class="step">Move In</div>
+    </div>
+</section>
+
+<!-- ABOUT The System-->
+<section class="about">
+    <h2>About Us</h2>
+    <p>
+        This Room Rental System helps people find affordable rooms and helps owners list their rooms easily.
+    </p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <p>© 2026 Room Rental System | All Rights Reserved</p>
+</footer>
+
+<script src="/Room_Rental_System/js/index.js"></script>
 </body>
 </html>

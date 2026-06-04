@@ -20,7 +20,8 @@
     <div><a href="#"><i class="fa-solid fa-hotel"></i>Rooms</a></div>
     <div><a href="#"><i class="fa-solid fa-bookmark"></i>Bookings</a></div>
     <div><a href="#"><i class="fa-solid fa-gear"></i>setting</a></div>
-    <div><a href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></div>
+    <div><a href="/Room_Rental_System/"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+</div>
 </div>  
 
 <div class="items">
