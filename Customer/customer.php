@@ -1,89 +1,126 @@
+<?php
+session_start();
+include("dbconnection.php");
+
+if(!isset($_SESSION['user']['id'])){
+    header("Location: /Room_Rental_System/auth/login.php");
+    exit();
+}
+
+$user = $_SESSION['user'];
+
+/* 🔥 SEARCH LOGIC (IMPORTANT - MUST BE HERE) */
+$location = $_GET['location'] ?? '';
+$price = $_GET['price'] ?? '';
+
+$sql = "SELECT * FROM rooms WHERE status='available'";
+
+if(!empty($location)){
+    $sql .= " AND location LIKE '%$location%'";
+}
+
+if(!empty($price)){
+    $sql .= " AND price <= '$price'";
+}
+
+$sql .= " ORDER BY id DESC";
+
+$result = mysqli_query($conn, $sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="customer.css">
-
-    <title>Home Page</title>
+    <title>Customer Dashboard</title>
 </head>
+
 <body>
-<button id="darkMode">🌙 Dark Mode</button>
-<!--Logo loding wait   -->
+
+<!-- HEADER -->
 <div class="head">
-    <div id="logo">Logo</div>
+
+    <div id="logo">Room Rental</div>
 
     <nav class="content">
-        <a href="#index" class="home">Home</a>
-        <a href="#" class="rooms">Rooms</a>
-        <a href="#" class="about1">About Us</a>
-        <a href="#" class="work">How It Work</a>
-        <a href="#" class="contact">Contact us</a>
+        <a href="customer.php" class="home">Home</a>
+        <a href="#rooms" class="rooms">Rooms</a>
+        <a href="my_bookings.php" class="about1">My Bookings</a>
+        <a href="#how" class="work">How It Works</a>
+        <a href="#contact" class="contact">Contact</a>
     </nav>
 
     <div class="portel">
-        <a href="auth/login.php">Login</a>
-        <a href="auth/register.php" class="register">Register</a>
+        <span style="margin-right:10px;">Hi, <?= $user['name'] ?></span>
+
+        <a href="/Room_Rental_System/auth/logout.php"
+           onclick="return confirm('Are you sure you want to logout?')">
+           Logout
+        </a>
     </div>
+
 </div>
 
 <!-- HERO -->
 <section class="hero">
     <div class="hero-content">
-        <h1>Welcome to Room Rental System</h1>
-        <p>Find affordable rooms easily in your city</p>
-        <a href="#" class="btn">Explore Rooms</a>
+        <h1>Welcome Back, <?= $user['name'] ?> 👋</h1>
+        <p>Find and book your perfect room easily</p>
+        <a href="#rooms" class="btn">Browse Rooms</a>
     </div>
 </section>
 
-<!-- SEARCH  for location  btn -->
+<!-- SEARCH -->
 <section class="search-section">
     <h2>Search Rooms</h2>
-    <div class="search-box">
-        <input type="text" placeholder="Location">
-        <input type="text" placeholder="Price range">
-        <button>Search</button>
-    </div>
+
+    <form method="GET" class="search-box">
+
+        <input type="text" name="location" placeholder="Location"
+               value="<?= htmlspecialchars($location) ?>">
+
+        <input type="number" name="price" placeholder="Max Price"
+               value="<?= htmlspecialchars($price) ?>">
+
+        <button type="submit">Search</button>
+
+        <a href="customer.php" class="btn" style="text-decoration:none;">
+            Reset
+        </a>
+
+    </form>
 </section>
 
-<!-- ROOMS (DYNAMIC) fetch from Data base  -->
-<section class="rooms-section">
+<!-- ROOMS -->
+<section class="rooms-section" id="rooms">
     <h2>Available Rooms</h2>
 
     <div class="room-grid">
 
         <?php
-        include("dbconnection.php");
-
-        $sql = "SELECT * FROM rooms ORDER BY id DESC";
-        $result = mysqli_query($conn, $sql);
-
         if(mysqli_num_rows($result) > 0){
-
             while($row = mysqli_fetch_assoc($result)){
         ?>
 
         <div class="room-card">
 
-  <?php if(!empty($row['image'])) { ?>
-    <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>"
-         alt="Room Image"
-         style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
-<?php } else { ?>
-    <img src="uploads/default.png"
-         alt="Default Image"
-         style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
-<?php } ?>
+            <?php if(!empty($row['image'])) { ?>
+                <img src="uploads/<?= $row['image'] ?>" alt="Room">
+            <?php } else { ?>
+                <img src="uploads/default.png" alt="Room">
+            <?php } ?>
 
-            <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-            <p>📍 <?php echo htmlspecialchars($row['location']); ?></p>
-            <p>💰 Rs. <?php echo htmlspecialchars($row['price']); ?>/month</p>
+            <h3><?= htmlspecialchars($row['title']) ?></h3>
+            <p>📍 <?= htmlspecialchars($row['location']) ?></p>
+            <p>💰 Rs <?= htmlspecialchars($row['price']) ?>/month</p>
 
             <p style="font-size:12px; color:gray;">
-                <?php echo htmlspecialchars($row['description']); ?>
+                <?= htmlspecialchars($row['description']) ?>
             </p>
 
-            <a href="auth/login.php" class="btn">
+            <a href="book_room.php?id=<?= $row['id'] ?>" class="btn">
                 Book Now
             </a>
 
@@ -91,40 +128,34 @@
 
         <?php
             }
-
         } else {
-            echo "<p style='text-align:center;'>No rooms available right now.</p>";
+            echo "<p style='text-align:center;'>No rooms found.</p>";
         }
         ?>
 
     </div>
 </section>
-    </div>
-</section>
 
-<!-- HOW IT WORKS   (system description)   -->
-<section class="how">
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
     <h2>How It Works</h2>
     <div class="steps">
         <div class="step">Search Room</div>
-        <div class="step">Contact Owner</div>
+        <div class="step">Book Room</div>
         <div class="step">Move In</div>
     </div>
 </section>
 
-<!-- ABOUT The System-->
-<section class="about">
-    <h2>About Us</h2>
-    <p>
-        This Room Rental System helps people find affordable rooms and helps owners list their rooms easily.
-    </p>
+<!-- CONTACT -->
+<section class="about" id="contact">
+    <h2>Contact</h2>
+    <p>Email: support@roomrental.com</p>
 </section>
 
 <!-- FOOTER -->
 <footer class="footer">
-    <p>© 2026 Room Rental System | All Rights Reserved</p>
+    <p>© 2026 Room Rental System</p>
 </footer>
 
-<script src="/Room_Rental_System/js/index.js"></script>
 </body>
 </html>

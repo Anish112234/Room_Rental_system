@@ -1,32 +1,85 @@
+<?php
+session_start();
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+include("dbconnection.php");
+
+if(!isset($_SESSION['user']['id'])){
+    header("Location: /Room_Rental_System/auth/login.php");
+    exit();
+}
+
+$user = $_SESSION['user'];
+$owner_id = $user['id'];
+
+$total_rooms = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM rooms WHERE owner_id='$owner_id'"));
+
+$total_bookings = mysqli_num_rows(mysqli_query($conn, "
+    SELECT b.* 
+    FROM bookings b 
+    JOIN rooms r ON b.room_id = r.id 
+    WHERE r.owner_id='$owner_id'
+"));
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner</title>
+    <title>Owner Dashboard</title>
     <link rel="stylesheet" href="css/owner.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="content">
-    <div class="nav">
-       <div class="logo">
-    <h1><i class="fa-regular fa-house"></i>ROOM RENTAL</h1>
-    </div>
-    <div><a href="#"><i class="fa-regular fa-house"></i>Dashboard</a></div>
-    <div><a href="#"><i class="fa-solid fa-hotel"></i>My rooms</a></div>
-    <div><a href="#"><i class="fa-solid fa-bookmark"></i>Bookings</a></div>
-    <div><a href="add.php"><i class="fa-solid fa-plus"></i>Add Rooms</a></div>
-    <div><a href="#"><i class="fa-solid fa-hand-holding-dollar"></i>Earnings</a></div>
-    <div><a href="#"><i class="fa-regular fa-message"></i>Messages</a></div>
-    <div><a href="#"><i class="fa-solid fa-user"></i>Profile</a></div>
-    <div><a href="#"><i class="fa-solid fa-gear"></i>Setting</a></div>
-    <div><a href="#"><i class="fa-solid fa-right-from-bracket"></i>Logout</a></div>
-</div>  
 
-<div class="items">
-  dash board
+<div class="content">
+
+    <!-- SIDEBAR -->
+    <div class="nav">
+
+        <div class="logo">
+            <h1>🏠 ROOM RENTAL</h1>
+        </div>
+
+        <a class="active" href="owner.php">Dashboard</a>
+        <a href="myrooms.php">My Rooms</a>
+        <a href="bookings.php">Bookings</a>
+        <a href="add.php">Add Room</a>
+        <a href="profile.php">Profile</a>
+
+        <a href="/Room_Rental_System/Owners/logout.php"
+           onclick="return confirm('Are you sure you want to logout?')">
+           Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+        <div class="topbar">
+            <h2>Welcome, <?= $user['name'] ?> 👋</h2>
+            <p>Owner Dashboard</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Rooms</h3>
+                <p><?= $total_rooms ?></p>
+            </div>
+
+            <div class="card">
+                <h3>Total Bookings</h3>
+                <p><?= $total_bookings ?></p>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-</div>
+
 </body>
 </html>
