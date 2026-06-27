@@ -1,0 +1,139 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ================= TOPBAR ================= */
+.topbar{
+    margin: 20px;
+    padding: 10px 0;
+}
+
+.topbar h2{
+    font-size: 28px;
+    color: #222;
+}
+
+.topbar p{
+    color: #666;
+    margin-top: 5px;
+}
+
+/* ================= FILTER BOX ================= */
+.filter-box{
+    margin: 10px 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-box a{
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #f1f1f1;
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.filter-box a:hover{
+    background: #ddd;
+}
+
+.active-filter{
+    background: #169ff4;
+    color: #fff !important;
+}
+
+/* ================= TABLE BOX ================= */
+.table-box{
+    background: #fff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    overflow-x: auto;
+}
+
+/* ================= TABLE ================= */
+table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+table th{
+    background: #169ff4;   /* SAME COLOR AS OWNER THEME */
+    color: #fff;
+    padding: 14px;
+    text-align: left;
+    font-size: 15px;
+}
+
+table td{
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+}
+
+table tr:hover{
+    background: #f8fafc;
+}
+
+/* ================= ACTION BUTTONS ================= */
+.edit-btn,
+.delete-btn{
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+/* EDIT */
+.edit-btn{
+    background: #16a34a;
+    color: white;
+}
+
+.edit-btn:hover{
+    background: #15803d;
+}
+
+/* DELETE */
+.delete-btn{
+    background: #dc2626;
+    color: white;
+}
+
+.delete-btn:hover{
+    background: #b91c1c;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px){
+
+    .table-box{
+        margin: 10px;
+        padding: 10px;
+    }
+
+    table{
+        min-width: 600px;
+    }
+
+    .topbar h2{
+        font-size: 22px;
+    }
+
+    .filter-box{
+        margin: 10px;
+    }
+}

@@ -1,0 +1,197 @@
+   *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            background: #f4f7fb;
+            color:#222;
+            padding: 20px;
+        }
+
+        .booking-container{
+            max-width: 1050px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .room-box,
+        .form-box{
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* LEFT SIDE ROOM CARD */
+        .room-image{
+            width:100%;
+            height:260px;
+            object-fit:cover;
+            display:block;
+        }
+
+        .room-details{
+            padding:20px;
+        }
+
+        .room-details h2{
+            margin-bottom:12px;
+            color:#169ff4;
+            font-size: 28px;
+        }
+
+        .room-details p{
+            margin-bottom:10px;
+            font-size:15px;
+            color:#444;
+            line-height:1.6;
+        }
+
+        .price-tag{
+            display:inline-block;
+            background:#eaf6ff;
+            color:#169ff4;
+            padding:10px 14px;
+            border-radius:8px;
+            font-weight:bold;
+            margin:10px 0 15px;
+        }
+
+        .room-desc{
+            margin-top:12px;
+            color:#666;
+        }
+
+        .back-btn{
+            display:inline-block;
+            margin-top:18px;
+            text-decoration:none;
+            background:#555;
+            color:#fff;
+            padding:10px 16px;
+            border-radius:8px;
+            transition:0.3s;
+        }
+
+        .back-btn:hover{
+            background:#333;
+        }
+
+        /* RIGHT SIDE FORM */
+        .form-box{
+            padding:25px;
+        }
+
+        .form-box h2{
+            text-align:center;
+            margin-bottom:20px;
+            color:#169ff4;
+        }
+
+        .form-group{
+            margin-bottom:16px;
+        }
+
+        .form-group label{
+            display:block;
+            margin-bottom:7px;
+            font-weight:bold;
+            color:#333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea{
+            width:100%;
+            padding:12px 14px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:15px;
+            outline:none;
+            transition:0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus{
+            border-color:#169ff4;
+            box-shadow: 0 0 0 3px rgba(22,159,244,0.12);
+        }
+
+        .form-group textarea{
+            resize:vertical;
+            min-height:100px;
+        }
+
+        .form-row{
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap:14px;
+        }
+
+        .btn-book{
+            width:100%;
+            border:none;
+            background:#169ff4;
+            color:#fff;
+            padding:14px;
+            font-size:16px;
+            font-weight:bold;
+            border-radius:8px;
+            cursor:pointer;
+            transition:0.3s;
+            margin-top:8px;
+        }
+
+        .btn-book:hover{
+            background:#0f8ddd;
+        }
+
+        .note{
+            margin-top:10px;
+            font-size:13px;
+            color:#666;
+        }
+
+        .payment-note{
+            font-size:13px;
+            color:#777;
+            margin-top:5px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px){
+            .booking-container{
+                grid-template-columns: 1fr;
+            }
+
+            .room-image{
+                height:220px;
+            }
+        }
+
+        @media (max-width: 600px){
+            body{
+                padding:12px;
+            }
+
+            .form-row{
+                grid-template-columns: 1fr;
+            }
+
+            .form-box,
+            .room-details{
+                padding:18px;
+            }
+
+            .room-details h2,
+            .form-box h2{
+                font-size:24px;
+            }
+        }

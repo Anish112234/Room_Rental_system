@@ -1,0 +1,123 @@
+
+/* ===========================
+   PROFILE PAGE STYLE
+=========================== */
+
+.main-content{
+    padding:30px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:80vh;
+    background:#f5f6fa;
+}
+
+/* 
+   PROFILE BOX
+*/
+
+.profile-box{
+    width:100%;
+    max-width:500px;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.1);
+}
+
+.profile-box h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#333;
+}
+
+/* ===========================
+   FORM FIELDS
+=========================== */
+
+.profile-box form{
+    display:flex;
+    flex-direction:column;
+}
+
+.profile-box label{
+    margin-top:10px;
+    margin-bottom:5px;
+    font-weight:bold;
+    color:#444;
+}
+
+.profile-box input{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    outline:none;
+    font-size:14px;
+}
+
+.profile-box input:focus{
+    border-color:#2d89ef;
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.profile-box button{
+    margin-top:20px;
+    padding:12px;
+    background:#2d89ef;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.profile-box button:hover{
+    background:#1b6fd1;
+}
+
+/* ===========================
+   MESSAGES
+=========================== */
+
+.success{
+    background:#d4edda;
+    color:#155724;
+    padding:10px;
+    border-radius:6px;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.error{
+    background:#f8d7da;
+    color:#721c24;
+    padding:10px;
+    border-radius:6px;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+.main-content{
+    padding:15px;
+}
+
+.profile-box{
+    padding:20px;
+}
+
+.profile-box h2{
+    font-size:22px;
+}
+
+}
+

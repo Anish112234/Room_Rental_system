@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -12,81 +13,134 @@ if(!isset($_SESSION['user']['id'])){
     exit();
 }
 
-$owner_id = $_SESSION['user']['id'];
+$user = $_SESSION['user'];
+$owner_id = $user['id'];
 
-$result = mysqli_query($conn, "SELECT * FROM rooms WHERE owner_id='$owner_id'");
+$sql = "SELECT * FROM rooms WHERE owner_id='$owner_id' ORDER BY id DESC";
+$result = mysqli_query($conn, $sql);
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Rooms</title>
 
-    <!-- COMMON LAYOUT CSS -->
+    <!-- Common Owner Layout -->
     <link rel="stylesheet" href="css/owner.css">
 
-    <!-- PAGE SPECIFIC CSS -->
+    <!-- Page Specific CSS -->
     <link rel="stylesheet" href="css/myrooms.css">
 </head>
-
 <body>
 
-<div class="content">
+<header class="head">
 
-    <!-- SIDEBAR -->
-    <div class="nav">
-        <h1 class="logo">🏠 ROOM RENTAL</h1>
+    <div id="logo">Room Rental</div>
 
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+    <nav class="content" id="nav-menu">
         <a href="owner.php">Dashboard</a>
-        <a class="active" href="myrooms.php">My Rooms</a>
+        <a href="myrooms.php" class="home">My Rooms</a>
         <a href="bookings.php">Bookings</a>
         <a href="add.php">Add Room</a>
         <a href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
+
+        <div class="mobile-user">
+            <span>Hi, <?= htmlspecialchars($user['name']) ?></span>
+            <a href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
+        </div>
+    </nav>
+
+    <div class="portel">
+        <span class="welcome-text">Hi, <?= htmlspecialchars($user['name']) ?></span>
+        <a href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
+</header>
 
-        <div class="topbar">
-            <h2>My Rooms</h2>
-            <p>Manage your properties</p>
-        </div>
+<!-- PAGE HEADER -->
+<section class="dashboard-section page-top">
+    <h2>My Rooms</h2>
+    <p>Manage all your listed rooms from here.</p>
+</section>
 
-        <div class="room-grid">
+<!-- ROOM LIST -->
+<section class="rooms-page-section">
+    <div class="room-grid">
 
-            <?php if(mysqli_num_rows($result) == 0){ ?>
-                <div class="empty">
-                    <h3>No rooms added yet 🏠</h3>
-                </div>
-            <?php } ?>
-
+        <?php if(mysqli_num_rows($result) > 0){ ?>
+            
             <?php while($row = mysqli_fetch_assoc($result)) { ?>
 
-            <div class="room-card">
+                <div class="room-card">
 
-                <img src="../uploads/<?= $row['image'] ?>">
+                    <div class="room-image">
+                        <img src="../uploads/<?= htmlspecialchars($row['image'] ?: 'default.png') ?>" alt="Room Image">
+                    </div>
 
-                <div class="info">
-                    <h3><?= $row['title'] ?></h3>
-                    <p>📍 <?= $row['location'] ?></p>
-                    <p>💰 Rs <?= $row['price'] ?></p>
-                    <p>Status: <?= $row['status'] ?></p>
+                    <div class="room-info">
+                        <h3><?= htmlspecialchars($row['title']) ?></h3>
+                        <p>📍 <strong>Location:</strong> <?= htmlspecialchars($row['location']) ?></p>
+                        <p>💰 <strong>Price:</strong> Rs <?= htmlspecialchars($row['price']) ?></p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            <?php if(strtolower($row['status']) == 'available'){ ?>
+                                <span class="status available">Available</span>
+                            <?php } else { ?>
+                                <span class="status unavailable"><?= htmlspecialchars(ucfirst($row['status'])) ?></span>
+                            <?php } ?>
+                        </p>
+
+                        <?php if(!empty($row['description'])){ ?>
+                            <p class="room-desc"><?= htmlspecialchars($row['description']) ?></p>
+                        <?php } ?>
+                    </div>
+
+                    <div class="room-actions">
+                        <a class="edit-btn" href="edit_room.php?id=<?= $row['id'] ?>">Edit</a>
+                        <a class="delete-btn"
+                           href="delete_room.php?id=<?= $row['id'] ?>"
+                           onclick="return confirm('Are you sure you want to delete this room?')">
+                           Delete
+                        </a>
+                    </div>
+
                 </div>
-
-                <div class="actions">
-                    <a class="edit" href="edit_room.php?id=<?= $row['id'] ?>">Edit</a>
-                    <a class="delete" href="delete_room.php?id=<?= $row['id'] ?>" onclick="return confirm('Delete this room?')">Delete</a>
-                </div>
-
-            </div>
 
             <?php } ?>
 
-        </div>
+        <?php } else { ?>
+
+            <div class="empty-room-box">
+                <h3>No rooms added yet 🏠</h3>
+                <p>You haven’t listed any rooms yet. Add your first room now.</p>
+                <a href="add.php" class="btn">Add Room</a>
+            </div>
+
+        <?php } ?>
 
     </div>
+</section>
 
-</div>
+<footer class="footer">
+    <p>© 2026 Room Rental | Owner Panel</p>
+</footer>
+
+<script>
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+if(menuToggle && navMenu){
+    menuToggle.addEventListener("click", function(){
+        navMenu.classList.toggle("show");
+    });
+}
+</script>
 
 </body>
 </html>
+

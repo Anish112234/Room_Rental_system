@@ -42,4 +42,23 @@ document.querySelectorAll(".btn").forEach(button => {
 });
 
 
+//for Hamburger menu ko laghi
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("menu-toggle");
+    const nav = document.getElementById("nav-menu");
+
+    toggle.addEventListener("click", () => {
+        nav.classList.toggle("show");
+    });
+
+
+    
+    // optional: close menu when clicking a link (mobile UX improvement)
+    document.querySelectorAll(".content a").forEach(link => {
+        link.addEventListener("click", () => {
+            nav.classList.remove("show");
+        });
+    });
+});
+
 

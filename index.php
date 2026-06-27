@@ -9,16 +9,19 @@
 </head>
 <body>
 <button id="darkMode">🌙 Dark Mode</button>
-<!--Logo loding wait   -->
+<!--Logo loding wait  aaudai xa vai -->
 <div class="head">
     <div id="logo">Logo</div>
 
-    <nav class="content">
+    <!-- hamburger button -->
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+    <nav class="content" id="nav-menu">
         <a href="#index" class="home">Home</a>
-        <a href="#" class="rooms">Rooms</a>
-        <a href="#" class="about1">About Us</a>
-        <a href="#" class="work">How It Work</a>
-        <a href="#" class="contact">Contact us</a>
+        <a href="#">Rooms</a>
+        <a href="#about">About Us</a>
+        <a href="#">How It Work</a>
+        <a href="#">Contact us</a>
     </nav>
 
     <div class="portel">
@@ -99,8 +102,6 @@
 
     </div>
 </section>
-    </div>
-</section>
 
 <!-- HOW IT WORKS   (system description)   -->
 <section class="how">
@@ -113,11 +114,17 @@
 </section>
 
 <!-- ABOUT The System-->
-<section class="about">
+<section class="about" id="about">
     <h2>About Us</h2>
     <p>
-        This Room Rental System helps people find affordable rooms and helps owners list their rooms easily.
+        This Room Rental System helps users find affordable rooms and helps owners list properties easily and safely.
     </p>
+
+    <div class="stats">
+        <div>100+ Rooms</div>
+        <div>50+ Owners</div>
+        <div>24/7 Support</div>
+    </div>
 </section>
 
 <!-- FOOTER -->
@@ -125,6 +132,6 @@
     <p>© 2026 Room Rental System | All Rights Reserved</p>
 </footer>
 
-<script src="./js/index.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

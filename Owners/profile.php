@@ -2,17 +2,13 @@
 session_start();
 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-if(!isset($_SESSION['user'])){
+include("dbconnection.php");
+
+if(!isset($_SESSION['user']['id'])){
     header("Location: /Room_Rental_System/auth/login.php");
-    exit();
-}
-?>
-<?php
-session_start();
-
-if(!isset($_SESSION['user'])){
-    header("Location: login.php");
     exit();
 }
 
@@ -20,108 +16,82 @@ $user = $_SESSION['user'];
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="css/profile.css">
+
     <link rel="stylesheet" href="css/owner.css">
+    <link rel="stylesheet" href="css/profile.css">
 </head>
+
 <body>
 
-<div class="content">
+<!-- HEADER (same as other owner pages) -->
+<header class="head">
 
-    <!-- SIDEBAR (same as owner) -->
-    <div class="nav">
-        <h1 class="logo">🏠 ROOM RENTAL</h1>
+    <div id="logo">Room Rental</div>
+
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+    <nav class="content" id="nav-menu">
 
         <a href="owner.php">Dashboard</a>
         <a href="myrooms.php">My Rooms</a>
         <a href="bookings.php">Bookings</a>
         <a href="add.php">Add Room</a>
-        <a class="active" href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
+        <a href="profile.php" class="home">Profile</a>
+
+        <div class="mobile-user">
+            <span>Hi, <?= htmlspecialchars($user['name']) ?></span>
+            <a href="logout.php" onclick="return confirm('Logout?')">Logout</a>
+        </div>
+
+    </nav>
+
+    <div class="portel">
+        <span>Hi, <?= htmlspecialchars($user['name']) ?></span>
+        <a href="logout.php" onclick="return confirm('Logout?')">Logout</a>
     </div>
 
-    <!-- MAIN -->
-    <div class="main">
+</header>
 
-        <div class="topbar">
-            <h2>My Profile</h2>
-            <p>Account details</p>
+<!-- PROFILE SECTION -->
+<section class="profile-section">
+
+    <div class="profile-card">
+
+        <div class="avatar">
+            <?= strtoupper(substr($user['name'], 0, 1)) ?>
         </div>
 
-        <div class="profile-card">
+        <h2><?= htmlspecialchars($user['name']) ?></h2>
 
-            <div class="avatar">
-                <?= strtoupper(substr($user['name'],0,1)) ?>
-            </div>
-
-            <h2><?= $user['name'] ?></h2>
-
-            <div class="info">
-                <p><b>Email:</b> <?= $user['email'] ?></p>
-                <p><b>Role:</b> <?= $user['role'] ?></p>
-                <p><b>User ID:</b> <?= $user['id'] ?></p>
-            </div>
-
+        <div class="info">
+            <p><b>Email:</b> <?= htmlspecialchars($user['email']) ?></p>
+            <p><b>Role:</b> <?= htmlspecialchars($user['role']) ?></p>
+            <p><b>User ID:</b> <?= $user['id'] ?></p>
         </div>
 
-    </div>
-
-</div>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/owner.css">
-</head>
-<body>
-
-<div class="content">
-
-    <!-- SIDEBAR (same as owner) -->
-    <div class="nav">
-        <h1 class="logo">🏠 ROOM RENTAL</h1>
-
-        <a href="owner.php">Dashboard</a>
-        <a href="myrooms.php">My Rooms</a>
-        <a href="bookings.php">Bookings</a>
-        <a href="add.php">Add Room</a>
-        <a class="active" href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
-    </div>
-
-    <!-- MAIN -->
-    <div class="main">
-
-        <div class="topbar">
-            <h2>My Profile</h2>
-            <p>Account details</p>
-        </div>
-
-        <div class="profile-card">
-
-            <div class="avatar">
-                <?= strtoupper(substr($user['name'],0,1)) ?>
-            </div>
-
-            <h2><?= $user['name'] ?></h2>
-
-            <div class="info">
-                <p><b>Email:</b> <?= $user['email'] ?></p>
-                <p><b>Role:</b> <?= $user['role'] ?></p>
-                <p><b>User ID:</b> <?= $user['id'] ?></p>
-            </div>
-
-        </div>
+        <a href="edit_profile.php" class="btn">Edit Profile</a>
 
     </div>
 
-</div>
+</section>
+
+<footer class="footer">
+    <p>© 2026 Room Rental | Owner Panel</p>
+</footer>
+
+<script>
+const menuToggle = document.getElementById("menu-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+menuToggle.addEventListener("click", function(){
+    navMenu.classList.toggle("show");
+});
+</script>
 
 </body>
 </html>

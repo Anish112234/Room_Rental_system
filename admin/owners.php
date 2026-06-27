@@ -1,9 +1,8 @@
-
 <?php
 session_start();
 include("../dbconnection.php");
 
-/* 🔐 ADMIN CHECK */
+/* (security ko laghi) ADMIN CHECK */
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 'admin') {
     header("Location: /Room_Rental_System/auth/login.php");
     exit();
@@ -11,15 +10,10 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 'admin') {
 
 $user = $_SESSION['user'];
 
-/* ROLE FILTER */
-$role = $_GET['role'] ?? 'all';
-
-if ($role == 'all') {
-    $query = "SELECT * FROM users ORDER BY id DESC";
-} else {
-    $role = mysqli_real_escape_string($conn, $role);
-    $query = "SELECT * FROM users WHERE role='$role' ORDER BY id DESC";
-}
+/* GET ONLY OWNERS */
+$query = "SELECT * FROM users
+          WHERE role='owner'
+          ORDER BY id DESC";
 
 $data = mysqli_query($conn, $query);
 ?>
@@ -29,7 +23,7 @@ $data = mysqli_query($conn, $query);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Users</title>
+<title>Manage Owners</title>
 
 <link rel="stylesheet" href="../Owners/css/owner.css">
 <link rel="stylesheet" href="css/usertable.css">
@@ -37,7 +31,7 @@ $data = mysqli_query($conn, $query);
 </head>
 <body>
 
-<!-- HEADER -->
+<!--HEADER  -->
 
 <header class="head">
 
@@ -49,14 +43,13 @@ $data = mysqli_query($conn, $query);
 
         <a href="admin.php">Dashboard</a>
 
-        <a href="users.php" class="home">Users</a>
+        <a href="users.php">Users</a>
 
-        <a href="owners.php">Owners</a>
+        <a href="owners.php" class="home">Owners</a>
 
         <a href="rooms.php">Rooms</a>
 
         <a href="bookings.php">Bookings</a>
-
 
         <a href="profile.php">Profile</a>
 
@@ -86,42 +79,14 @@ $data = mysqli_query($conn, $query);
 
 </header>
 
-<!-- MAIN  -->
+<!--  MAIN -->
 
 <div class="main-content">
 
     <div class="topbar">
-        <h2>Manage Users</h2>
-        <p>Welcome, <?= htmlspecialchars($user['name']) ?> 👋</p>
+        <h2>Manage Owners</h2>
+        <p>Approve or reject owner registrations</p>
     </div>
-
-    <!-- FILTER -->
-
-    <div class="filter-box">
-
-        <a href="users.php?role=all"
-           class="<?= $role=='all' ? 'active-filter' : '' ?>">
-           All
-        </a>
-
-        <a href="users.php?role=admin"
-           class="<?= $role=='admin' ? 'active-filter' : '' ?>">
-           Admin
-        </a>
-
-        <a href="users.php?role=owner"
-           class="<?= $role=='owner' ? 'active-filter' : '' ?>">
-           Owner
-        </a>
-
-        <a href="users.php?role=customer"
-           class="<?= $role=='customer' ? 'active-filter' : '' ?>">
-           Customer
-        </a>
-
-    </div>
-
-    <!-- TABLE -->
 
     <div class="table-box">
 
@@ -131,8 +96,7 @@ $data = mysqli_query($conn, $query);
                 <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Role</th>
-                <th>Created</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
 
@@ -148,22 +112,51 @@ $data = mysqli_query($conn, $query);
 
                     <td><?= htmlspecialchars($row['email']) ?></td>
 
-                    <td><?= ucfirst($row['role']) ?></td>
+                    <td>
 
-                    <td><?= $row['created_at'] ?? '-' ?></td>
+                        <?php
+                        if($row['owner_status']=="pending"){
+                            echo "<span style='color:#f59e0b;font-weight:bold;'>Pending</span>";
+                        }
+                        elseif($row['owner_status']=="approved"){
+                            echo "<span style='color:green;font-weight:bold;'>Approved</span>";
+                        }
+                        else{
+                            echo "<span style='color:red;font-weight:bold;'>Rejected</span>";
+                        }
+                        ?>
+
+                    </td>
 
                     <td>
 
-                        <a class="edit-btn"
-                           href="update.php?id=<?= $row['id'] ?>">
-                            Edit
-                        </a>
+                        <?php if($row['owner_status']=="pending"){ ?>
 
-                        <a class="delete-btn"
-                           href="delete_user.php?id=<?= $row['id'] ?>"
-                           onclick="return confirm('Delete this user?')">
-                            Delete
-                        </a>
+                            <a class="edit-btn"
+                               href="approve_owner.php?id=<?= $row['id'] ?>"
+                               onclick="return confirm('Approve this owner?')">
+                                Approve
+                            </a>
+
+                            <a class="delete-btn"
+                               href="reject_owner.php?id=<?= $row['id'] ?>"
+                               onclick="return confirm('Reject this owner?')">
+                                Reject
+                            </a>
+
+                        <?php } elseif($row['owner_status']=="approved"){ ?>
+
+                            <span style="color:green;font-weight:bold;">
+                                Approved ✓
+                            </span>
+
+                        <?php } else { ?>
+
+                            <span style="color:red;font-weight:bold;">
+                                Rejected ✗
+                            </span>
+
+                        <?php } ?>
 
                     </td>
 
@@ -174,9 +167,11 @@ $data = mysqli_query($conn, $query);
             <?php } else { ?>
 
                 <tr>
-                    <td colspan="6" style="text-align:center;">
-                        No users found
+
+                    <td colspan="5" style="text-align:center;">
+                        No owner accounts found.
                     </td>
+
                 </tr>
 
             <?php } ?>
@@ -202,4 +197,3 @@ menuToggle.addEventListener("click",function(){
 
 </body>
 </html>
-

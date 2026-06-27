@@ -1,45 +1,89 @@
- <?php
+<?php
 session_start();
-require("dbconnection.php");
+include("../dbconnection.php");
 
-if (isset($_POST['login'])) {
+if(isset($_POST['login'])){
 
-    $email = $_POST['email'];
+    $email = mysqli_real_escape_string($conn, trim($_POST['email']));
     $password = $_POST['password'];
 
-    if ($email === "admin@gmail.com" && $password === "admin@123") {
-        $_SESSION['role'] = "admin";
-          $_SESSION['email'] = $email;
-           $_SESSION['email'] = "Admin";
-        header("Location:/Room_Rental_System/admin/admin.php");
-        exit();
-    }
-       //database base bata tannxa email rw pw milayako xa ki nai
-    $result = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
-    $user = mysqli_fetch_assoc($result);
+    // Find user by email
+    $sql = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $sql);
 
+    if(mysqli_num_rows($result) > 0){
 
-    if ($user) {
-        if ($password == $user['password']) {
+        $user = mysqli_fetch_assoc($result);
 
+        // Verify password
+        if(password_verify($password, $user['password'])){
+
+            // Owner approval check
+            if($user['role'] == 'owner'){
+
+                if($user['owner_status'] == 'pending'){
+
+                    echo "<script>
+                    alert('Your owner account is waiting for admin approval.');
+                    window.location='login.php';
+                    </script>";
+                    exit();
+
+                }
+
+                if($user['owner_status'] == 'rejected'){
+
+                    echo "<script>
+                    alert('Your owner account has been rejected by the admin.');
+                    window.location='login.php';
+                    </script>";
+                    exit();
+
+                }
+
+            }
+             //page redirect hune thau
             $_SESSION['user'] = $user;
 
-                  // redirect based on role
-            if ($user['role'] == "customer") {
-                header("Location:/Room_Rental_System/customer/customer.php");
-            } elseif ($user['role'] == "owner") {
-                header("Location: /Room_Rental_system/Owners/owner.php");
+            if($user['role'] == 'admin'){
+
+                header("Location: /Room_Rental_System/Admin/admin.php");
+                exit();
+
             }
 
-            exit();
+            elseif($user['role'] == 'owner'){
 
-        } else {
-            echo "<script>alert('Wrong password');</script>";
+                header("Location: /Room_Rental_System/Owners/owner.php");
+                exit();
+
+            }
+             
+            elseif($user['role'] == 'customer'){
+
+                header("Location: /Room_Rental_System/Customer/customer.php");
+                exit();
+
+            }
+
+            else{
+
+                echo "<script>alert('Invalid user role.');</script>";
+
+            }
+
+        }else{
+
+            echo "<script>alert('Invalid email or password');</script>";
+
         }
 
-    } else {
-        echo "<script>alert('Email not found');</script>";
+    }else{
+
+        echo "<script>alert('Invalid email or password');</script>";
+
     }
+
 }
 ?>
 <!DOCTYPE html>

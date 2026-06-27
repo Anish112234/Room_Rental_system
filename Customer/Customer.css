@@ -1,85 +1,115 @@
-
 *{
     margin: 0;
     padding: 0;
-    color: black;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
 
+body{
+    background: #fff;
+    color: #222;
+    line-height: 1.5;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+img{
+    max-width: 100%;
+    display: block;
+}
+
+/*  COLOR SYSTEM  */
+:root{
+    --main: #169ff4;
+}
+
+/* HEADER  */
 .head{
-    background-color: rgb(255, 255, 255);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
-    height: 60px;
-    font-size: large;
-    box-shadow: 0px 2px 0px rgb(242, 238, 238);
+    padding: 12px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-.head a{
-    text-decoration: none;
+#logo{
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--main);
 }
 
-/* NAV LINKS */
+/* NAV */
 .content{
     display: flex;
     gap: 25px;
-}
-
-/* LOGIN / REGISTER */
-.portel{
-    display: flex;
-    gap: 15px;
-}
-
-/* REGISTER BUTTON */
-.register{
-    background-color: rgb(22, 159, 244);
-    border-radius: 4px;
-    width: 90px;
-    height: 30px;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
 }
 
-/* ACTIVE HOME */
-.home{
-    text-decoration: underline;
-    color: aqua;
-}
-
-/* NAV HOVER ANIMATION */
-nav a {
+.content a{
     position: relative;
+    font-weight: 500;
+    padding: 5px 0;
 }
 
-nav a::before {
+.content a::after{
     content: '';
     position: absolute;
     bottom: -5px;
     left: 0;
     width: 0;
-    height: 3px;
-    background-color: aqua;
-    transition: width 0.4s ease;
+    height: 2px;
+    background: var(--main);
+    transition: 0.3s;
 }
 
-nav a:hover::before {
+.content a:hover::after{
     width: 100%;
 }
 
-/* ================= HERO ================= */
+.home{
+    color: var(--main) !important;
+    font-weight: bold;
+}
+
+/* USER AREA */
+.portel{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.portel a{
+    background: var(--main);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+/* HAMBURGER */
+.menu-toggle{
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--main);
+}
+
+/* HERO */
 .hero{
-    height: 90vh;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    min-height: 90vh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white;
+    background: linear-gradient(to right,#0f2027,#2c5364);
+    color: #fff;
+    padding: 60px 20px;
 }
 
 .hero-content h1{
@@ -94,15 +124,15 @@ nav a:hover::before {
 }
 
 .btn{
+    display: inline-block;
     padding: 12px 20px;
-    background-color: aqua;
-    color: black;
+    background: var(--main);
+    color: #fff;
     border-radius: 6px;
-    text-decoration: none;
     font-weight: bold;
 }
 
-/* ================= SEARCH ================= */
+/*  SEARCH  */
 .search-section{
     padding: 50px 20px;
     text-align: center;
@@ -123,22 +153,21 @@ nav a:hover::before {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 200px;
 }
 
 .search-box button{
     padding: 10px 15px;
     border: none;
-    background-color: rgb(22, 159, 244);
+    background: var(--main);
     color: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
-/* ================= ROOMS ================= */
+/* ROOMS  */
 .rooms-section{
     padding: 60px 20px;
-    background-color: #f5f5f5;
+    background: #f5f5f5;
     text-align: center;
 }
 
@@ -147,15 +176,14 @@ nav a:hover::before {
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    margin-top: 20px;
 }
 
 .room-card{
-    background: white;
+    background: #fff;
     width: 220px;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: 0.3s;
 }
 
@@ -163,7 +191,7 @@ nav a:hover::before {
     transform: translateY(-5px);
 }
 
-/* ================= HOW IT WORKS ================= */
+/*  HOW  */
 .how{
     padding: 60px 20px;
     text-align: center;
@@ -174,153 +202,102 @@ nav a:hover::before {
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    margin-top: 20px;
 }
 
 .step{
-    background-color: rgb(22, 159, 244);
-    color: white;
+    background: var(--main);
+    color: #fff;
     padding: 20px;
     border-radius: 8px;
     width: 180px;
 }
 
-/* ================= ABOUT ================= */
+/*  ABOUT  */
 .about{
     padding: 60px 20px;
     text-align: center;
-    background-color: #eee;
+    background: #eee;
+}
+
+.about h2{
+    margin-bottom: 10px;
 }
 
 .about p{
     max-width: 600px;
     margin: auto;
-    margin-top: 10px;
 }
 
-/* ================= FOOTER ================= */
+/* FOOTER */
 .footer{
-    background-color: #111;
-    color: white;
+    background: #111;
+    color: #fff;
     text-align: center;
     padding: 20px;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px){
-    .head{
-        flex-direction: column;
-        height: auto;
-        gap: 10px;
-        padding: 10px;
+.mobile-user{
+    display: none;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .menu-toggle{
+        display: block;
     }
 
-    .content,
-    .portel{
+
+    .mobile-user{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+    .content{
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background: #fff;
+        padding: 15px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .content.show{
+        display: flex;
+    }
+
+    /* SHOW MOBILE USER ONLY ON MOBILE */
+    .mobile-user{
+        display: flex;
         flex-direction: column;
         gap: 10px;
-        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        margin-top: 10px;
+    }
+
+    .portel{
+        display: none;
     }
 
     .hero-content h1{
         font-size: 2rem;
     }
 
-    .room-grid,
-    .steps{
+    .search-box{
         flex-direction: column;
-        align-items: center;
+    }
+
+    .search-box input,
+    .search-box button,
+    .btn{
+        width: 100%;
     }
 }
-
-
-/*
-after use toogle dark buttom
-*/
-.dark{
-    background-color: #1e1e1e;
-    color: white;
-}
-
-.dark #darkMode{
-    background-color: #1e1e1e;
-    color: white;
-    border: none;
-    border: 1px solid white;
-    border-radius: 5px;
-}
-.dark .head{
-     background-color: #1e1e1e;
-   
-}
-.dark a{
-    color: white;
-}
-.dark .hero{
-     background-color: #1e1e1e;
-     color: white;
-}
-.dark .search-section{
-    background-color: #1e1e1e;
-    margin-bottom: 3px;
-}
-.dark .search-section h2{
-    color: white;
-}
-.dark .search-section input{
-    background-color: transparent;
-    color: white;
-} 
-
-
-.dark .rooms-section{
-    background-color: #1e1e1e;
-   
-}
-.dark .rooms-section h2{
-        color: white;
-}
-.dark .room-card{
-    background-color: #1e1e1e;
-      width: 220px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(227, 227, 227, 0.242);
-    transition: 0.3s;
-}
-
-.dark .room-card p{
-     color: white;
-} 
-
-.dark .room-card h3{
-    color: white;
-}
-
-.dark .how{
-    background-color: #1e1e1e;
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-
-.dark .how h2{
-    color: white;
-}
-
-.dark .about{
-    background-color: #1e1e1e;
-}
-
-.dark .about h2{
-    color: white;
-}
-.dark .about p{
-    color: white;
-}
-.dark footer p
-{
-    color: white;
-}
-
-
-

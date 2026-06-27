@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 include("dbconnection.php");
 
 if(!isset($_SESSION['user']['id'])){
@@ -7,9 +12,18 @@ if(!isset($_SESSION['user']['id'])){
     exit();
 }
 
-$owner_id = $_SESSION['user']['id'];
+$user = $_SESSION['user'];
+$owner_id = $user['id'];
 
-$sql = "SELECT b.*, r.title, r.location, u.name AS customer_name
+/*
+    Get all bookings for rooms that belong to this owner
+    Also fetch customer name and room details
+*/
+$sql = "SELECT b.*, 
+               r.title, 
+               r.location, 
+               r.price,
+               u.name AS customer_name
         FROM bookings b
         JOIN rooms r ON b.room_id = r.id
         JOIN users u ON b.user_id = u.id
@@ -20,102 +34,181 @@ $result = mysqli_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Bookings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Bookings</title>
 
     <link rel="stylesheet" href="css/owner.css">
     <link rel="stylesheet" href="css/bookings.css">
-
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 </head>
-
 <body>
 
-<div class="content">
+<!-- HEADER -->
+<header class="head">
 
-    <div class="nav">
-        <h1 class="logo">🏠 ROOM RENTAL</h1>
+    <div id="logo">Room Rental</div>
 
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+
+    <nav class="content" id="nav-menu">
         <a href="owner.php">Dashboard</a>
         <a href="myrooms.php">My Rooms</a>
-        <a class="active" href="bookings.php">Bookings</a>
+        <a href="bookings.php" class="home">Bookings</a>
         <a href="add.php">Add Room</a>
         <a href="profile.php">Profile</a>
-        <a href="logout.php">Logout</a>
+
+        <div class="mobile-user">
+            <span>Hi, <?= htmlspecialchars($user['name']) ?></span>
+            <a href="/Room_Rental_System/Owners/logout.php"
+               onclick="return confirm('Are you sure you want to logout?')">
+               Logout
+            </a>
+        </div>
+    </nav>
+
+    <div class="portel">
+        <span class="welcome-text">Hi, <?= htmlspecialchars($user['name']) ?></span>
+        <a href="/Room_Rental_System/Owners/logout.php"
+           onclick="return confirm('Are you sure you want to logout?')">
+           Logout
+        </a>
     </div>
 
-    <div class="main">
+</header>
 
-        <div class="topbar">
+<!-- PAGE CONTENT -->
+<section class="page-section">
+    <div class="page-container">
+
+        <div class="page-header">
             <h2>Bookings</h2>
-            <p>Manage customer bookings</p>
+            <p>Manage customer booking requests</p>
         </div>
 
         <div class="booking-grid">
 
-        <?php while($row = mysqli_fetch_assoc($result)) { ?>
+            <?php if(mysqli_num_rows($result) > 0){ ?>
 
-            <?php
-            $status = strtolower(trim($row['status'] ?? 'pending'));
+                <?php while($row = mysqli_fetch_assoc($result)) { ?>
 
-            if($status == "accepted"){
-                $label = "Accepted";
-            } elseif($status == "rejected"){
-                $label = "Rejected";
-            } else {
-                $label = "Pending";
-            }
-            ?>
+                    <?php
+                    $status = strtolower(trim($row['status'] ?? 'pending'));
 
-            <div class="booking-card">
+                    if($status == "accepted"){
+                        $label = "Accepted";
+                    } elseif($status == "rejected"){
+                        $label = "Rejected";
+                    } elseif($status == "cancelled"){
+                        $label = "Cancelled";
+                    } else {
+                        $label = "Pending";
+                    }
+                    ?>
 
-                <h3>🏠 <?= $row['title'] ?></h3>
-                <p>📍 <?= $row['location'] ?></p>
+                    <div class="booking-card">
 
-                <p><b>Customer:</b> <?= $row['customer_name'] ?></p>
-                <p><b>Date:</b> <?= $row['booking_date'] ?></p>
+                        <!-- ROOM INFO -->
+                        <div class="booking-room">
+                            <h3>🏠 <?= htmlspecialchars($row['title']) ?></h3>
+                            <p>📍 <?= htmlspecialchars($row['location']) ?></p>
+                            <p>💰 Rs <?= htmlspecialchars($row['price']) ?></p>
+                        </div>
 
-                <p><b>Status:</b>
-                    <span class="status <?= $status ?>">
-                        <?= $label ?>
-                    </span>
-                </p>
+                        <hr>
 
-                <div class="actions">
+                        <!-- CUSTOMER INFO -->
+                        <div class="booking-section">
+                            <h4>Customer Details</h4>
+                            <p><strong>Name:</strong> <?= htmlspecialchars($row['customer_name']) ?></p>
+                            <p><strong>Phone:</strong> <?= htmlspecialchars($row['phone']) ?></p>
+                            <p><strong>Guests:</strong> <?= htmlspecialchars($row['guests']) ?></p>
+                        </div>
 
-                    <?php if($status == "pending") { ?>
+                        <hr>
 
-                        <a class="accept"
-                           href="update_booking.php?id=<?= $row['id'] ?>&status=accepted">
-                           Accept
-                        </a>
+                        <!-- BOOKING INFO -->
+                        <div class="booking-section">
+                            <h4>Booking Details</h4>
+                            <p><strong>Booked On:</strong> <?= htmlspecialchars($row['booking_date']) ?></p>
+                            <p><strong>Check-in:</strong> <?= htmlspecialchars($row['check_in']) ?></p>
+                            <p><strong>Check-out:</strong> <?= htmlspecialchars($row['check_out']) ?></p>
+                        </div>
 
-                        <a class="reject"
-                           href="update_booking.php?id=<?= $row['id'] ?>&status=rejected"
-                           onclick="return confirm('Are you sure?')">
-                           Reject
-                        </a>
+                        <hr>
 
-                    <?php } else { ?>
+                        <!-- PAYMENT INFO -->
+                        <div class="booking-section">
+                            <h4>Payment Details</h4>
+                            <p><strong>Method:</strong> <?= htmlspecialchars($row['payment_method']) ?></p>
+                            <p><strong>Payment Status:</strong> <?= htmlspecialchars($row['payment_status']) ?></p>
 
-                        <span class="status <?= $status ?>">
-                            <?= $label ?>
-                        </span>
+                            <?php if(!empty($row['transaction_id'])) { ?>
+                                <p><strong>Transaction ID:</strong> <?= htmlspecialchars($row['transaction_id']) ?></p>
+                            <?php } ?>
+                        </div>
 
-                    <?php } ?>
+                        <?php if(!empty($row['special_request'])) { ?>
+                            <hr>
+                            <div class="booking-section">
+                                <h4>Special Request</h4>
+                                <p><?= nl2br(htmlspecialchars($row['special_request'])) ?></p>
+                            </div>
+                        <?php } ?>
 
+                        <hr>
+
+                        <!-- STATUS + ACTION -->
+                        <div class="booking-footer">
+
+                            <p>
+                                <strong>Status:</strong>
+                                <span class="status <?= $status ?>">
+                                    <?= $label ?>
+                                </span>
+                            </p>
+
+                            <div class="actions">
+                                <?php if($status == "pending") { ?>
+
+                                    <a class="accept"
+                                       href="update_booking.php?id=<?= $row['id'] ?>&status=accepted"
+                                       onclick="return confirm('Accept this booking?')">
+                                       Accept
+                                    </a>
+
+                                    <a class="reject"
+                                       href="update_booking.php?id=<?= $row['id'] ?>&status=rejected"
+                                       onclick="return confirm('Reject this booking?')">
+                                       Reject
+                                    </a>
+
+                                <?php } else { ?>
+                                    <span class="done-action"><?= $label ?></span>
+                                <?php } ?>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <?php } ?>
+
+            <?php } else { ?>
+
+                <div class="empty-booking">
+                    <h3>No bookings found yet 📭</h3>
+                    <p>When customers book your rooms, they will appear here.</p>
                 </div>
 
-            </div>
-
-        <?php } ?>
+            <?php } ?>
 
         </div>
 
     </div>
+</section>
 
-</div>
-
+<script src="js/owner.js"></script>
 </body>
 </html>
