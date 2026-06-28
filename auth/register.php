@@ -1,5 +1,6 @@
 <?php
 include("dbconnection.php");
+include("../includes/mail.php");
 ?>
 
 <!DOCTYPE html>
@@ -161,30 +162,70 @@ if(isset($_POST['submit'])){
 
     if(mysqli_query($conn,$sql)){
 
-        if($role=="owner"){
+    if($role=="owner"){
 
-            echo "<script>
-            alert('Owner registration submitted successfully. Please wait for Admin approval.');
-            window.location='login.php';
-            </script>";
+        sendMail(
+            $email,
+            "Owner Registration Submitted",
+            "
+            <h2>Welcome to Room Rental System</h2>
 
-        }else{
+            <p>Hello <b>$name</b>,</p>
 
-            echo "<script>
-            alert('Registration Successful');
-            window.location='login.php';
-            </script>";
+            <p>Your owner account has been created successfully.</p>
 
-        }
+            <p><b>Status:</b> Pending Admin Approval</p>
+
+            <p>Please wait for the admin to approve your account.</p>
+
+            <p>You will receive another email after approval.</p>
+
+            "
+        );
+
+    }else{
+
+        sendMail(
+            $email,
+            "Registration Successful",
+            "
+            <h2>Welcome to Room Rental System</h2>
+
+            <p>Hello <b>$name</b>,</p>
+
+            <p>Your customer account has been created successfully.</p>
+
+            <p>You can now log in and use the system.</p>
+
+            "
+        );
+
+    }
+
+    if($role=="owner"){
+
+        echo "<script>
+        alert('Owner registration submitted successfully. Please wait for Admin approval.');
+        window.location='login.php';
+        </script>";
 
     }else{
 
         echo "<script>
-        alert('Registration Failed');
-        window.location='register.php';
+        alert('Registration Successful');
+        window.location='login.php';
         </script>";
 
     }
+
+}else{
+
+    echo "<script>
+    alert('Registration Failed');
+    window.location='register.php';
+    </script>";
+
+}
 
 }
 
