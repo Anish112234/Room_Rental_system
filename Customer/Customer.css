@@ -240,6 +240,25 @@ img{
     display: none;
 }
 
+
+
+.status{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    color:#fff;
+    margin-top:10px;
+}
+
+.available{
+    background:#27ae60;
+}
+
+.booked{
+    background:#e74c3c;
+}
+
 /* MOBILE */
 @media(max-width:768px){
 

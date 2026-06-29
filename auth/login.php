@@ -117,7 +117,7 @@ if(isset($_POST['login'])){
         </div>
         <diV class="soj">
             <input class="box" type="checkbox">Remember me
-            <a class="forget" href="#">Forget me</a>
+            <a class="forget" href="forgot_password.php">Forget me</a>
         </diV>
         <div>
             <input class="sumb" type="submit" value="Login" name="login">

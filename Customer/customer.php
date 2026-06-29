@@ -83,9 +83,10 @@ $result = mysqli_stmt_get_result($stmt);
         <a href="customer.php" class="home">Home</a>
         <a href="#rooms">Rooms</a>
         <a href="my_bookings.php">My Bookings</a>
+        <a href="profile.php">Profile</a>
         <a href="#how">How</a>
         <a href="#contact">Contact</a>
-
+        
         <div class="mobile-user">
             <span>Hi, <?= htmlspecialchars($user['name']) ?></span>
             <a href="logout.php">Logout</a>
@@ -153,13 +154,9 @@ $result = mysqli_stmt_get_result($stmt);
 
                     <!-- Availability badge -->
                     <?php if ($available) { ?>
-                        <span style="background:#27ae60;color:white;padding:5px 10px;border-radius:20px;font-size:12px;display:inline-block;margin-top:10px;">
-                            🟢 Available
-                        </span>
+                      <span class="status available">🟢 Available</span>
                     <?php } else { ?>
-                        <span style="background:#e74c3c;color:white;padding:5px 10px;border-radius:20px;font-size:12px;display:inline-block;margin-top:10px;">
-                            🔴 Booked
-                        </span>
+                       <span class="status booked">🔴 Booked</span>
                     <?php } ?>
 
                     <h3><?= htmlspecialchars($row['title']) ?></h3>

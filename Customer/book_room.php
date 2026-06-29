@@ -2,6 +2,9 @@
 <?php
 session_start();
 include("dbconnection.php");
+include("../includes/mail.php");
+
+
 
 if (!isset($_SESSION['user']['id'])) {
     header("Location: /Room_Rental_System/auth/login.php");
@@ -24,6 +27,15 @@ if (!$room_query || mysqli_num_rows($room_query) == 0) {
     die("Room not found or unavailable");
 }
 $room = mysqli_fetch_assoc($room_query);
+
+
+/* Fetch additional room images */
+$image_query = mysqli_query(
+    $conn,
+    "SELECT * FROM room_images WHERE room_id='$room_id'"
+);
+
+
 
 /* Default values for form   (book garna ko laghi)*/
 $check_in = "";
@@ -111,6 +123,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ('$user_id', '$room_id', '$booking_date', '$check_in', '$check_out', '$guests', '$phone', '$payment_method', '$payment_status', '$transaction_id', '$special_request', '$status')";
 
         if (mysqli_query($conn, $sql)) {
+            
+/* Get owner's email */
+$ownerQuery = mysqli_query($conn,"
+SELECT users.name, users.email
+FROM users
+JOIN rooms ON users.id = rooms.owner_id
+WHERE rooms.id='$room_id'
+");
+
+$owner = mysqli_fetch_assoc($ownerQuery);
+
+$subject = "New Booking Request - Room Rental System";
+
+$message = "
+<h2>New Booking Request</h2>
+
+<p>Hello <b>{$owner['name']}</b>,</p>
+
+<p>You have received a new booking request.</p>
+
+<hr>
+
+<b>Customer:</b> {$user['name']}<br>
+<b>Customer Email:</b> {$user['email']}<br><br>
+
+<b>Room:</b> {$room['title']}<br>
+<b>Location:</b> {$room['location']}<br>
+<b>Check In:</b> {$check_in}<br>
+<b>Check Out:</b> {$check_out}<br>
+<b>Guests:</b> {$guests}<br>
+<b>Payment:</b> {$payment_method}<br>
+
+<hr>
+
+<p>Please login to your Owner Panel to approve or reject this booking.</p>
+
+<p>Room Rental System</p>
+";
+
+sendMail(
+    $owner['email'],
+    $subject,
+    $message
+);
+
+
             echo "<script>
                 alert('Room booked successfully!');
                 window.location='my_bookings.php';
@@ -138,11 +196,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- LEFT SIDE ROOM DETAILS -->
     <div class="room-box">
-        <?php if(!empty($room['image'])) { ?>
-            <img src="/Room_Rental_System/uploads/<?php echo htmlspecialchars($room['image']); ?>" alt="Room Image" class="room-image">
-        <?php } else { ?>
-            <img src="/Room_Rental_System/uploads/default.png" alt="Default Room Image" class="room-image">
-        <?php } ?>
+      
+<!-- Main Image -->
+<img
+id="mainImage"
+src="/Room_Rental_System/uploads/<?=
+!empty($room['image'])
+? htmlspecialchars($room['image'])
+: 'default.png';
+?>"
+alt="Room Image"
+class="room-image">
+
+<!-- Additional Images -->
+<div class="gallery">
+
+<?php while($img=mysqli_fetch_assoc($image_query)){ ?>
+
+<img
+class="thumb"
+src="/Room_Rental_System/uploads/<?= htmlspecialchars($img['image']) ?>"
+onclick="changeImage(this.src)">
+
+<?php } ?>
+
+</div>
+
+
 
         <div class="room-details">
             <h2><?php echo htmlspecialchars($room['title']); ?></h2>
@@ -254,6 +334,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
 </div>
+  
+<script>
+
+function changeImage(src){
+
+document.getElementById("mainImage").src=src;
+
+}
+
+</script>
+
 
 </body>
 </html>

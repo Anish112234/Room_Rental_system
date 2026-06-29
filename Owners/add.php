@@ -96,6 +96,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             VALUES ('$owner_id', '$title', '$location', '$price', '$description', '$new_image_name', 'available')";
 
     if (mysqli_query($conn, $sql)) {
+
+    //add multiple imagse
+    $room_id = mysqli_insert_id($conn);
+
+    if (!empty($_FILES['images']['name'][0])) {
+
+        foreach ($_FILES['images']['name'] as $key => $name) {
+
+            if ($_FILES['images']['error'][$key] == 0) {
+
+                $tmp = $_FILES['images']['tmp_name'][$key];
+
+                $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+
+                if (in_array($ext, ['jpg','jpeg','png','webp'])) {
+
+                    $new_name = time() . "_" . uniqid() . "." . $ext;
+
+                    move_uploaded_file(
+                        $tmp,
+                        "../uploads/" . $new_name
+                    );
+
+                    mysqli_query(
+                        $conn,
+                        "INSERT INTO room_images(room_id,image)
+                         VALUES('$room_id','$new_name')"
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
         echo "<script>
                 alert('Room added successfully!');
                 window.location='myrooms.php';
@@ -189,13 +227,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" placeholder="Write room details..." required></textarea>
+                    <textarea id="description" name="description" placeholder="Write room details...
+Important:put your Transaction methid & Transaction ID.....
+                    " required></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="image">Upload Image</label>
-                    <input type="file" id="image" name="image" accept=".jpg,.jpeg,.png,.webp" required>
-                </div>
+            
+<div class="form-group">
+    <label for="image">Cover Image</label>
+    <input
+        type="file"
+        id="image"
+        name="image"
+        accept=".jpg,.jpeg,.png,.webp"
+        required>
+</div>
+
+<div class="form-group">
+    <label for="images">Additional Images (Optional)</label>
+    <input
+        type="file"
+        id="images"
+        name="images[]"
+        accept=".jpg,.jpeg,.png,.webp"
+        multiple>
+</div>
+
+
 
                 <button type="submit" class="submit-btn">Add Room</button>
 

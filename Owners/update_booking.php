@@ -1,6 +1,8 @@
 <?php
 session_start();
 include("dbconnection.php");
+include("../includes/mail.php");
+
 
 if(!isset($_SESSION['user']['id'])){
     header("Location: /Room_Rental_System/auth/login.php");
@@ -84,6 +86,84 @@ $update_sql = "UPDATE bookings
                WHERE id = '$booking_id'";
 
 if(mysqli_query($conn, $update_sql)){
+
+
+/* Get customer and room details */
+$mail_sql = "
+SELECT
+u.name AS customer_name,
+u.email AS customer_email,
+r.title,
+r.location
+FROM bookings b
+JOIN users u ON b.user_id = u.id
+JOIN rooms r ON b.room_id = r.id
+WHERE b.id='$booking_id'
+LIMIT 1
+";
+
+$mail_result = mysqli_query($conn, $mail_sql);
+
+if(mysqli_num_rows($mail_result)==1){
+
+    $mail = mysqli_fetch_assoc($mail_result);
+
+    if($status=="accepted"){
+
+        $subject="Booking Approved - Room Rental System";
+
+        $body="
+        <h2>Your Booking Has Been Approved</h2>
+
+        <p>Hello <b>{$mail['customer_name']}</b>,</p>
+
+        <p>Good news! Your booking request has been approved by the owner.</p>
+
+        <hr>
+
+        <b>Room:</b> {$mail['title']}<br>
+        <b>Location:</b> {$mail['location']}<br>
+        <b>Status:</b> Accepted
+
+        <hr>
+
+        <p>Thank you for using Room Rental System.</p>
+        ";
+
+    }else{
+
+        $subject="Booking Rejected - Room Rental System";
+
+        $body="
+        <h2>Booking Update</h2>
+
+        <p>Hello <b>{$mail['customer_name']}</b>,</p>
+
+        <p>Unfortunately, your booking request has been rejected by the owner.</p>
+
+        <hr>
+
+        <b>Room:</b> {$mail['title']}<br>
+        <b>Location:</b> {$mail['location']}<br>
+
+        <hr>
+
+        <p>You can login and book another available room.</p>
+
+        <p>Room Rental System</p>
+        ";
+
+    }
+
+    sendMail(
+        $mail['customer_email'],
+        $subject,
+        $body
+    );
+
+}
+
+
 
     $message = ($status == 'accepted') 
         ? "Booking accepted successfully!" 
