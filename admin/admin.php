@@ -37,7 +37,8 @@ $cancelled_bookings = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM bookin
 <!-- HEADER -->
 <header class="head">
 
-    <div id="logo">Admin Panel</div>
+     <div id="logo"><img src="../logo/Room_rental.png"></div>
+     <h2 id="admin">Admin Panel</h2>
 
     <div class="menu-toggle" id="menu-toggle">&#9776;</div>
 

@@ -104,6 +104,7 @@ if (isset($_POST['update'])) {
 
 <link rel="stylesheet" href="../Owners/css/owner.css">
 <link rel="stylesheet" href="css/profile.css">
+<link rel="stylesheet" href="css/admin.css">
 
 </head>
 
@@ -111,7 +112,8 @@ if (isset($_POST['update'])) {
 
 <header class="head">
 
-<div id="logo">Admin Panel</div>
+ <div id="logo"><img src="../logo/Room_rental.png"></div>
+     <h2 id="admin">Admin Panel</h2>
 
 <div class="menu-toggle" id="menu-toggle">&#9776;</div>
 

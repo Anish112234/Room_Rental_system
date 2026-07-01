@@ -1,3 +1,7 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +15,7 @@
 <button id="darkMode">🌙 Dark Mode</button>
 <!--Logo loding wait  aaudai xa vai -->
 <div class="head">
-    <div id="logo">Logo</div>
+    <div id="logo"><img src="logo/Room_rental.png"></div>
 
     <!-- hamburger button -->
     <div class="menu-toggle" id="menu-toggle">&#9776;</div>
@@ -59,7 +63,11 @@
         include("dbconnection.php");
 
         $sql = "SELECT * FROM rooms ORDER BY id DESC";
-        $result = mysqli_query($conn, $sql);
+       $result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("DB Error: " . mysqli_error($conn));
+}
 
         if(mysqli_num_rows($result) > 0){
 

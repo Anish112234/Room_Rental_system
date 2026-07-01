@@ -23,7 +23,6 @@ include("../includes/mail.php");
 
 <div class="logo">
 <h1>
-<i class="fa-regular fa-house"></i>
 Room Rental
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;System

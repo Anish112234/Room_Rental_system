@@ -97,8 +97,7 @@ if(isset($_POST['login'])){
 </head>
 <body>
    <div>
-    <div class="logo">
-    <h1><i class="fa-regular fa-house"></i>ROOM RENTAL</h1>
+      <div id="logo"><img src="../logo/Room_rental.png"></div>
     </div>
     <div class="login">
     <form method="POST">
@@ -123,7 +122,7 @@ if(isset($_POST['login'])){
             <input class="sumb" type="submit" value="Login" name="login">
         </div>
         <div class="acc">
-        <p class="do">don't have a account?<a class="register" href="#">Register here</a></p>
+        <p class="do">don't have a account?<a class="register" href="register.php">Register here</a></p>
         </div>
         </div>
     </form>
